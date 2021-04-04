@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Card } from "../organisms/Card";
 import { fetchQuestions } from "../services/triviaService";
 
-/*Instrucciones
-Mezclar las respuestas
-Solo poder picarle una vez
-*/
-
 const counterStyle = {
   backgroundColor:"#33485f",
   margin: "45px",
@@ -47,7 +42,7 @@ export const Trivia = () => {
     };
   
     const handleQuestionJump = (step) => {
-      if (questionNo < 7 && step === "forth") {
+      if (questionNo < 9 && step === "forth") {
         updateQuestionNo(questionNo + 1);
       }
       if (questionNo > 0 && step === "back") {
@@ -63,23 +58,17 @@ export const Trivia = () => {
         <React.Fragment>
           <p style={counterStyle}>SCORE: {score}/10</p>
           <Card
-            question={questions[questionNo].question}
+            question={questions[questionNo].question.replace(/&quot;|&#039;|&rsquo;/gi,"'")}
             answers={questions[questionNo].incorrect_answers}
             correctAnswer={questions[questionNo].correct_answer}
             isCorrect={handleCallback}
+            handleQuestionJump={handleQuestionJump}
           />
           <div style={buttonNavigation}>
-            <button
-              style={buttonStyle}
-              onClick={() => handleQuestionJump("back")}
-            >
+            <button style={buttonStyle} onClick={() => handleQuestionJump("back")}>
               Previous
             </button>
-  
-            <button
-              style={buttonStyle}
-              onClick={() => handleQuestionJump("forth")}
-            >
+            <button style={buttonStyle} onClick={() => handleQuestionJump("forth")}>
               Next
             </button>
           </div>

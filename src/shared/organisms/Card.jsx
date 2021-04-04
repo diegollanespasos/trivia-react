@@ -7,7 +7,7 @@ const divStyle = {
     borderRadius: "8px"
 };
 
-export const Card = ({ question, answers, correctAnswer, isCorrect }) => {
+export const Card = ({ question, answers, correctAnswer, isCorrect, handleQuestionJump }) => {
   
   const checkAnswer = (selectedAnswer) => {
     if (selectedAnswer === correctAnswer) {
@@ -15,22 +15,15 @@ export const Card = ({ question, answers, correctAnswer, isCorrect }) => {
     } else {
       isCorrect(false);
     }
+    handleQuestionJump('forth')
   };
 
   const allAnswers = () => {
-    const length = answers.length; 
-    const random =Math.floor(Math.random() * (length+1));
-    const array = [...answers];
-    array.splice(random, 0, correctAnswer);
-    console.log(array);
-    return array;
+    const randomNumber =Math.floor(Math.random() * (answers.length+1));
+    const answersArray = [...answers];
+    answersArray.splice(randomNumber, 0, correctAnswer);
+    return answersArray;
   };
-  
-/*
-  const allAnswers = () => {
-    return [...answers, correctAnswer];
-  };
-  */
 
   return (
     <React.Fragment>
