@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 
 const divStyle = {
     backgroundColor:"#33485f",
-    margin: "45px",
+    margin: "25px",
     padding: "50px",
     borderRadius: "8px"
 };
 
-export const Card = ({ question, answers, correctAnswer, isCorrect, handleQuestionJump }) => {
-  
+export const Card = ({ question, answers, correctAnswer, isCorrect, wasAnswered, handleWasAnswered }) => {
+
   const checkAnswer = (selectedAnswer) => {
-    if (selectedAnswer === correctAnswer) {
+    if (selectedAnswer === correctAnswer && wasAnswered === false) {
       isCorrect(true);
+      handleWasAnswered();
     } else {
       isCorrect(false);
     }
-    handleQuestionJump('forth')
   };
 
   const allAnswers = () => {

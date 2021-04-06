@@ -12,7 +12,7 @@ const counterStyle = {
 const buttonStyle = {
     fontSize:"20px",
     fontWeight: "bolder",
-    margin: "20px",
+    margin: "10px",
     backgroundColor:"#33485f",
 };
 
@@ -33,9 +33,13 @@ export const Trivia = () => {
         updateLoading(false);
       };
       receiveQuestions();
-    }, []);
+    },[]);
+
+    const handleWasAnswered = () => {
+      questions[questionNo].wasAnswered = true;
+    }
   
-    const handleCallback = (isCorrect) => {
+    const isCorrect = (isCorrect) => {
       if (isCorrect) {
         updateScore(score + 1);
       }
@@ -54,6 +58,7 @@ export const Trivia = () => {
       return <p>Loading...</p>;
     }
     if (!isLoading) {
+      console.log(questions);
       return (
         <React.Fragment>
           <p style={counterStyle}>SCORE: {score}/10</p>
@@ -61,8 +66,9 @@ export const Trivia = () => {
             question={questions[questionNo].question.replace(/&quot;|&#039;|&rsquo;/gi,"'")}
             answers={questions[questionNo].incorrect_answers}
             correctAnswer={questions[questionNo].correct_answer}
-            isCorrect={handleCallback}
-            handleQuestionJump={handleQuestionJump}
+            isCorrect={isCorrect}
+            wasAnswered={questions[questionNo].wasAnswered}
+            handleWasAnswered={handleWasAnswered}
           />
           <div style={buttonNavigation}>
             <button style={buttonStyle} onClick={() => handleQuestionJump("back")}>
