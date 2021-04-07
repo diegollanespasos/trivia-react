@@ -7,33 +7,31 @@ const divStyle = {
     borderRadius: "8px"
 };
 
-export const Card = ({ question, answers, correctAnswer, isCorrect, wasAnswered, handleWasAnswered }) => {
+export const Card = ({ questionObject, isCorrect, handleWasAnswered }) => {
+  const question = questionObject.question.replace(/&quot;|&#039;|&rsquo;/gi,"'");
+  const  { correct_answer, wasAnswered, randomizedAnswers } = questionObject;
 
   const checkAnswer = (selectedAnswer) => {
-    if (selectedAnswer === correctAnswer && wasAnswered === false) {
+    if (selectedAnswer === correct_answer && wasAnswered === false) {
       isCorrect(true);
-      handleWasAnswered();
     } else {
       isCorrect(false);
     }
-  };
-
-  const allAnswers = () => {
-    const randomNumber =Math.floor(Math.random() * (answers.length+1));
-    const answersArray = [...answers];
-    answersArray.splice(randomNumber, 0, correctAnswer);
-    return answersArray;
+    handleWasAnswered();
   };
 
   return (
     <React.Fragment>
       <div style={divStyle}>
         <h2> {question} </h2>
-        {allAnswers().map((answer, index) => (
+        {randomizedAnswers.map((answer, index) => (
           <p key={index} onClick={() => checkAnswer(answer)}>
             {answer}
           </p>
         ))}
+        { 
+         wasAnswered ? <h2>You have already answered</h2> : <h2>Please select an answer</h2> 
+        }
       </div>
     </React.Fragment>
   );

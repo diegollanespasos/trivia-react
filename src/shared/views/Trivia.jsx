@@ -36,7 +36,14 @@ export const Trivia = () => {
     },[]);
 
     const handleWasAnswered = () => {
-      questions[questionNo].wasAnswered = true;
+      const modifiedArray = questions.map((question, idx) => {
+          if(idx === questionNo) {
+            return { ...question, wasAnswered: true }
+          } else {
+            return question
+          }
+        })
+      updateQuestions(modifiedArray);
     }
   
     const isCorrect = (isCorrect) => {
@@ -58,16 +65,12 @@ export const Trivia = () => {
       return <p>Loading...</p>;
     }
     if (!isLoading) {
-      console.log(questions);
       return (
         <React.Fragment>
           <p style={counterStyle}>SCORE: {score}/10</p>
           <Card
-            question={questions[questionNo].question.replace(/&quot;|&#039;|&rsquo;/gi,"'")}
-            answers={questions[questionNo].incorrect_answers}
-            correctAnswer={questions[questionNo].correct_answer}
+            questionObject={questions[questionNo]}
             isCorrect={isCorrect}
-            wasAnswered={questions[questionNo].wasAnswered}
             handleWasAnswered={handleWasAnswered}
           />
           <div style={buttonNavigation}>
